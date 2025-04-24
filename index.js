@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     try {
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
         res.send(ip);
     } catch (error) {
         res.status(500).send('Error retrieving IP address');
