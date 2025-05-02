@@ -7,7 +7,11 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     try {
-        const ip = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        const forwarded = req.headers["x-forwarded-for"];
+        const ip =
+            typeof forwarded === "string"
+        ? forwarded.split(",")[0]
+        : req.socket.remoteAddress || req.ip;
         res.send({
             ReqIp: req.ip,
             headerIp: ip
